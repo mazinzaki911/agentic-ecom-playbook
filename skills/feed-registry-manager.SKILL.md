@@ -55,9 +55,9 @@ This means the skill never goes stale — even if either platform ships a breaki
            "imageGenerated": { "status": true, "timestamp": "2026-02-15T08:00:00Z", "files": ["123456_offer.jpg"] },
            "cdnUploaded": { "status": true, "timestamp": "2026-02-15T09:00:00Z", "urls": ["https://cdn.shopify.com/..."] },
            "feedIncluded": { "status": true, "timestamp": "2026-02-15T10:00:00Z", "feedFile": "meta-supplementary-feed-synced.csv" },
-           "metaSynced": { "status": true, "timestamp": "2026-02-15T11:00:00Z", "catalogId": "528951945420575" }
+           "metaSynced": { "status": true, "timestamp": "2026-02-15T11:00:00Z", "catalogId": "{your_catalog_id}" }
          },
-         "tags": ["winter-boots", "men"]
+         "tags": ["seasonal-collection", "men"]
        }
      }
    }
