@@ -50,7 +50,7 @@ This means the skill never goes stale — even if Shopify changes their API sche
 2. **Fetch products and their variants** from Shopify:
    ```graphql
    query ($cursor: String) {
-     products(first: 50, after: $cursor, query: "tag:winter-boots") {
+     products(first: 50, after: $cursor, query: "tag:seasonal-collection") {
        pageInfo { hasNextPage endCursor }
        edges {
          node {
@@ -87,7 +87,7 @@ This means the skill never goes stale — even if Shopify changes their API sche
      "gid://shopify/Product/123456": {
        "title": "Classic Chelsea Boot",
        "handle": "classic-chelsea-boot",
-       "tags": ["men", "winter-boots", "leather"],
+       "tags": ["men", "seasonal-collection", "leather"],
        "variants": [
          {
            "id": "gid://shopify/ProductVariant/789",
@@ -137,7 +137,7 @@ This means the skill never goes stale — even if Shopify changes their API sche
 ## Example Usage
 
 ```
-User: Map all variants for products in the "Winter Boots" collection and save to the variant map
+User: Map all variants for products in the "Seasonal Collection" collection and save to the variant map
 ```
 
 The skill will query Shopify, extract all variant data, and save or merge into the variant map file.
