@@ -13,7 +13,7 @@ Create collection ad campaigns on Meta that combine a hero image or video with a
 
 - The user wants to create collection ads for a product category or seasonal campaign.
 - The user says "build collection ads", "create carousel collection campaign", or "set up Instant Experience ads".
-- A new collection (e.g., "Spring Loafers", "Winter Boots") needs a dedicated ad campaign.
+- A new collection (e.g., "New Arrivals", "Seasonal Collection") needs a dedicated ad campaign.
 
 ## Prerequisites
 
@@ -45,7 +45,7 @@ This means the skill never goes stale — even if Meta ships a breaking change t
    - Hero image or video (URL or local file path)
    - Product set ID or criteria for the product grid (4+ products shown beneath the hero)
    - Primary text, headline, and CTA
-   - Budget (daily or lifetime, in EGP)
+   - Budget (daily or lifetime, in your local currency)
    - Target audience: broad, interest-based, or retargeting
 
 2. **Create the Instant Experience (Canvas).**
@@ -66,7 +66,7 @@ This means the skill never goes stale — even if Meta ships a breaking change t
        {
          "element_type": "BUTTON",
          "button_text": "Shop Now",
-         "button_url": "https://achilles-stores.com/collections/{handle}"
+         "button_url": "https://your-store.myshopify.com/collections/{handle}"
        }
      ]
    }
@@ -97,7 +97,7 @@ This means the skill never goes stale — even if Meta ships a breaking change t
    {
      "name": "Collection AdSet - {collection_name}",
      "campaign_id": "{campaign_id}",
-     "daily_budget": {budget_piasters},
+     "daily_budget": {budget_minor currency units (e.g., cents)},
      "billing_event": "IMPRESSIONS",
      "optimization_goal": "OFFSITE_CONVERSIONS",
      "promoted_object": {
@@ -106,7 +106,7 @@ This means the skill never goes stale — even if Meta ships a breaking change t
        "pixel_id": "{pixel_id}"
      },
      "targeting": {
-       "geo_locations": {"countries": ["EG"]},
+       "geo_locations": {"countries": ["{your_country_code}"]},
        "age_min": 18,
        "age_max": 65,
        "publisher_platforms": ["facebook", "instagram"]
@@ -124,7 +124,7 @@ This means the skill never goes stale — even if Meta ships a breaking change t
        "page_id": "{page_id}",
        "link_data": {
          "message": "{primary_text}",
-         "link": "https://achilles-stores.com/collections/{handle}",
+         "link": "https://your-store.myshopify.com/collections/{handle}",
          "name": "{headline}",
          "call_to_action": {"type": "SHOP_NOW"},
          "retailer_item_ids": ["{variant_id_1}", "{variant_id_2}", "{variant_id_3}", "{variant_id_4}"],
@@ -161,7 +161,7 @@ This means the skill never goes stale — even if Meta ships a breaking change t
 ## Example Usage
 
 ```
-User: Create a collection ad campaign for the Women's Winter Boots collection with this hero image and 300 EGP daily budget
+User: Create a collection ad campaign for the Women's Casual Collection collection with this hero image and 300 {currency} daily budget
 ```
 
 The skill will upload the hero image, create the Instant Experience, campaign, ad set, creative, and ad.
