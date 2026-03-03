@@ -96,7 +96,7 @@ This means the skill never goes stale — even if either platform ships a breaki
    {
      "filter": {
        "product_type": {"i_contains": "boots"},
-       "custom_label_0": {"eq": "winter-sale"}
+       "custom_label_0": {"eq": "seasonal-sale"}
      }
    }
    ```
@@ -147,8 +147,8 @@ This means the skill never goes stale — even if either platform ships a breaki
    Collection-to-Product-Set Sync Report
    ======================================
    Collection                  | Product Set ID     | Products | Status
-   Men's Winter Boots          | 12345678           | 23       | SYNCED
-   Women's Winter Boots        | 12345679           | 19       | SYNCED
+   Men's Leather Shoes          | 12345678           | 23       | SYNCED
+   Women's Casual Collection        | 12345679           | 19       | SYNCED
    Spring Loafers              | (new) 12345680     | 15       | CREATED
    Summer Sandals              | 12345681           | 12       | UPDATED (+3 products)
    ```
@@ -156,7 +156,7 @@ This means the skill never goes stale — even if either platform ships a breaki
 ## Required Environment Variables
 
 - `META_ACCESS_TOKEN` — long-lived User Access Token
-- `META_CATALOG_ID` — product catalog ID (e.g., `528951945420575`)
+- `META_CATALOG_ID` — product catalog ID (e.g., `{your_catalog_id}`)
 - `SHOPIFY_STORE_URL` — Shopify store URL
 - `SHOPIFY_ACCESS_TOKEN` — Admin API access token with `read_products` scope
 
