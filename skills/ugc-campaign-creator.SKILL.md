@@ -66,7 +66,7 @@ This means the skill never goes stale — even if Meta ships a breaking change t
      "video_filename.mp4": {
        "video_id": "123456",
        "product_ids": ["prod_1", "prod_2"],
-       "description": "Unboxing winter boots"
+       "description": "Unboxing seasonal footwear"
      }
    }
    ```
@@ -89,7 +89,7 @@ This means the skill never goes stale — even if Meta ships a breaking change t
    {
      "name": "UGC - {video_name} - {audience}",
      "campaign_id": "{campaign_id}",
-     "daily_budget": {budget_piasters},
+     "daily_budget": {budget_minor currency units (e.g., cents)},
      "billing_event": "IMPRESSIONS",
      "optimization_goal": "OFFSITE_CONVERSIONS",
      "promoted_object": {
@@ -97,7 +97,7 @@ This means the skill never goes stale — even if Meta ships a breaking change t
        "custom_event_type": "PURCHASE"
      },
      "targeting": {
-       "geo_locations": {"countries": ["EG"]},
+       "geo_locations": {"countries": ["{your_country_code}"]},
        "age_min": 18,
        "age_max": 65,
        "publisher_platforms": ["facebook", "instagram"],
@@ -122,7 +122,7 @@ This means the skill never goes stale — even if Meta ships a breaking change t
          "link_description": "{description}",
          "call_to_action": {
            "type": "SHOP_NOW",
-           "value": {"link": "https://achilles-stores.com"}
+           "value": {"link": "https://your-store.myshopify.com"}
          },
          "image_hash": "{thumbnail_hash}"
        }
@@ -155,7 +155,7 @@ This means the skill never goes stale — even if Meta ships a breaking change t
 ## Example Usage
 
 ```
-User: Create a UGC campaign with these 5 videos, 200 EGP per ad set, targeting men 25-45 in Egypt
+User: Create a UGC campaign with these 5 videos, 200 {currency} per ad set, targeting men 25-45 in your market
 ```
 
 The skill will upload videos, create the campaign with 5 ad sets (one per video), and attach the creatives.
