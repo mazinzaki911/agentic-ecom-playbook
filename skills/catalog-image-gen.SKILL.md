@@ -16,6 +16,30 @@ Automate the creation of promotional gallery images for product catalog feeds. T
 - The user wants to refresh existing offer overlays with a new discount percentage or design.
 - The user says "generate images for these products" in the context of catalog or feed work.
 
+## Prerequisites
+
+- **Playwright MCP server** must be installed and running. This is what makes this skill future-proof — it can navigate to live platform documentation to verify current API endpoints, parameters, and behavior before executing.
+- Meta Marketing API access token in `.env`
+- Shopify Admin API access token in `.env`
+- Store URL and Ad Account ID configured
+
+## Self-Learning Protocol
+
+Before executing any API call that fails or seems outdated, use Playwright to verify:
+
+1. **Navigate to the official docs:**
+   - Meta Marketing API: `https://developers.facebook.com/docs/marketing-api/reference/`
+   - Shopify Admin GraphQL API: `https://shopify.dev/docs/api/admin-graphql`
+   - Both platforms' changelogs for breaking changes
+
+2. **Check the current API version.** Both Meta and Shopify deprecate versions regularly. If a call fails, visit the changelog to find what changed.
+
+3. **Read the endpoint reference.** Navigate to the specific endpoint page, extract the current parameters, required fields, and any new restrictions.
+
+4. **Adapt and retry.** Update the API call with current parameters and re-execute. Save what you learned to CLAUDE.md memory so future runs start with the correct info.
+
+This means the skill never goes stale — even if either platform ships a breaking change tomorrow, Claude Code can read the docs and figure out the new way.
+
 ## Instructions
 
 1. **Identify source images.** Look for a product-image-map file (typically `data/active/product-image-map.json`) that maps product IDs to their source image filenames or URLs. If none exists, ask the user for the product list.
