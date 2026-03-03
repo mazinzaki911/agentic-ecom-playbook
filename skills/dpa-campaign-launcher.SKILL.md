@@ -43,7 +43,7 @@ This means the skill never goes stale — even if Meta ships a breaking change t
 
 1. **Gather campaign parameters.** Confirm with the user:
    - Campaign name and objective (default: `OUTCOME_SALES`)
-   - Daily or lifetime budget (in EGP, specified in piasters: multiply by 100)
+   - Daily or lifetime budget (in your local currency, specified in minor currency units (e.g., cents): multiply by 100)
    - Product set or catalog segment to advertise
    - Audience type: retargeting (website visitors, cart abandoners) or prospecting (broad/lookalike)
    - Optimization goal (default: `OFFSITE_CONVERSIONS`, event: `Purchase`)
@@ -57,7 +57,7 @@ This means the skill never goes stale — even if Meta ships a breaking change t
      "status": "PAUSED",
      "special_ad_categories": [],
      "campaign_budget_optimization": true,
-     "daily_budget": {budget_in_piasters}
+     "daily_budget": {budget_in_minor currency units (e.g., cents)}
    }
    ```
    Always create campaigns in PAUSED status first so the user can review before going live.
@@ -98,7 +98,7 @@ This means the skill never goes stale — even if Meta ships a breaking change t
            {"retention_seconds": 604800, "rule": {"event": {"eq": "Purchase"}}}
          ]
        }],
-       "geo_locations": {"countries": ["EG"]}
+       "geo_locations": {"countries": ["{your_country_code}"]}
      },
      "status": "PAUSED"
    }
@@ -119,7 +119,7 @@ This means the skill never goes stale — even if Meta ships a breaking change t
            {"retention_seconds": 2592000, "rule": {"event": {"eq": "Purchase"}}}
          ]
        }],
-       "geo_locations": {"countries": ["EG"]},
+       "geo_locations": {"countries": ["{your_country_code}"]},
        "age_min": 18,
        "age_max": 65
      },
@@ -137,7 +137,7 @@ This means the skill never goes stale — even if Meta ships a breaking change t
        "page_id": "{page_id}",
        "template_data": {
          "message": "Shop {{product.name}} now!",
-         "link": "https://achilles-stores.com",
+         "link": "https://your-store.myshopify.com",
          "call_to_action": {"type": "SHOP_NOW"}
        }
      }
@@ -160,7 +160,7 @@ This means the skill never goes stale — even if Meta ships a breaking change t
 ## Required Environment Variables
 
 - `META_ACCESS_TOKEN` — long-lived User Access Token
-- `META_AD_ACCOUNT_ID` — ad account ID (e.g., `act_7781591668619406`)
+- `META_AD_ACCOUNT_ID` — ad account ID (e.g., `act_{your_ad_account_id}`)
 - `META_CATALOG_ID` — product catalog ID
 - `META_PIXEL_ID` — pixel ID for conversion tracking
 - `META_PAGE_ID` — Facebook Page ID
@@ -168,7 +168,7 @@ This means the skill never goes stale — even if Meta ships a breaking change t
 ## Example Usage
 
 ```
-User: Launch a DPA retargeting campaign for the winter boots collection with 500 EGP daily budget
+User: Launch a DPA retargeting campaign for the seasonal collection with 500 {currency} daily budget
 ```
 
 The skill will create the campaign, product set, retargeting ad set, creative, and ad — all in PAUSED status for review.
