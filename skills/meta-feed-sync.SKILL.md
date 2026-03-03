@@ -102,7 +102,7 @@ This means the skill never goes stale — even if either platform ships a breaki
 ## Required Environment Variables
 
 - `META_ACCESS_TOKEN` — long-lived User Access Token for the Meta Marketing API
-- `META_CATALOG_ID` — the catalog ID (e.g., `528951945420575`)
+- `META_CATALOG_ID` — the catalog ID (e.g., `{your_catalog_id}`)
 - `META_FEED_ID` — the supplementary feed/data source ID (e.g., `1224589182977911`)
 - `META_API_VERSION` — API version (default: `v24.0`)
 
