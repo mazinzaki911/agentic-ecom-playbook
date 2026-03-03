@@ -1,19 +1,19 @@
 ---
 name: size-availability-auditor
-description: Audit variant stock levels across size ranges to identify lucky sizes, out-of-stock gaps, and restock opportunities.
+description: Audit variant stock levels across size ranges to identify limited-availability sizes, out-of-stock gaps, and restock opportunities.
 ---
 
 # Size Availability Auditor
 
 ## Purpose
 
-Analyze inventory distribution across sizes for product collections. Identify "lucky sizes" (sizes with limited availability across many products), out-of-stock sizes, overstocked sizes, and size-specific restock needs. This data drives lucky-size promotions, targeted email campaigns, and inventory planning.
+Analyze inventory distribution across sizes for product collections. Identify "limited-availability sizes" (sizes with limited availability across many products), out-of-stock sizes, overstocked sizes, and size-specific restock needs. This data drives size-limited promotions, targeted email campaigns, and inventory planning.
 
 ## When to Use
 
-- The user asks "which sizes are running low?" or "what are the lucky sizes?"
+- The user asks "which sizes are running low?" or "what are the limited-availability sizes?"
 - The user says "audit sizes", "check stock by size", or "size availability report".
-- Before launching a lucky-sizes promotion to identify qualifying products.
+- Before launching a size-availability promotion to identify qualifying products.
 - For inventory planning or restock decisions.
 - The user wants to find products with only 1-2 sizes remaining.
 
@@ -105,7 +105,7 @@ This means the skill never goes stale — even if Shopify changes their API sche
    }
    ```
 
-5. **Identify lucky-size products.** A "lucky size" product has:
+5. **Identify size-limited products.** A "lucky size" product has:
    - Only 1-3 sizes remaining in stock (out of its normal size range)
    - At least 1 unit in stock for the remaining sizes
    ```js
@@ -144,7 +144,7 @@ This means the skill never goes stale — even if Shopify changes their API sche
    ```
 
 7. **Export data.** Save results to:
-   - `data/active/lucky-sizes-data.json` — structured data for downstream use
+   - `data/active/size-availability-data.json` — structured data for downstream use
    - Optionally generate a CSV for spreadsheet analysis
 
 ## Required Environment Variables
@@ -154,13 +154,13 @@ This means the skill never goes stale — even if Shopify changes their API sche
 
 ## Key Files
 
-- `data/active/lucky-sizes-data.json` — lucky sizes analysis output
-- `data/active/lucky-sizes-data.min.json` — minified version for theme use
+- `data/active/size-availability-data.json` — limited-availability sizes analysis output
+- `data/active/size-availability-data.min.json` — minified version for theme use
 
 ## Example Usage
 
 ```
-User: Audit size availability for the winter boots collection and find lucky-size products
+User: Audit size availability for the seasonal collection and find size-limited products
 ```
 
-The skill will fetch all variants, build the size matrix, identify lucky-size products, and present the report.
+The skill will fetch all variants, build the size matrix, identify size-limited products, and present the report.
