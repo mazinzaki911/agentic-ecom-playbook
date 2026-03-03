@@ -44,7 +44,7 @@ This means the skill never goes stale — even if Shopify changes their API sche
 1. **Determine the scope.** Accept:
    - A collection handle or ID (map all products in a collection)
    - A list of product IDs
-   - A tag filter (e.g., "all products tagged winter-boots")
+   - A tag filter (e.g., "all products tagged seasonal-collection")
    - "All products" (paginate through entire catalog)
 
 2. **Fetch products and their variants** from Shopify:
