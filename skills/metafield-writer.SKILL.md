@@ -211,7 +211,7 @@ This means the skill never goes stale — even if Shopify changes their API sche
 ## Example Usage
 
 ```
-User: Set the "season" metafield to "Winter" on all products in the winter boots collection
+User: Set the "season" metafield to "Summer" on all products in the seasonal collection
 ```
 
 The skill will check for the definition, create it if needed, fetch all products in the collection, and set the metafield value on each.
