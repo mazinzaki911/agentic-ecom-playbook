@@ -135,13 +135,13 @@ This means the skill never goes stale — even if Shopify changes their API sche
 
 ## Required Environment Variables
 
-- `SHOPIFY_STORE_URL` — Shopify store URL (e.g., `achilles-stores.myshopify.com`)
+- `SHOPIFY_STORE_URL` — Shopify store URL (e.g., `your-store.myshopify.com`)
 - `SHOPIFY_ACCESS_TOKEN` — Admin API access token with `read_products`, `write_products`, `read_orders` scopes
 
 ## Example Usage
 
 ```
-User: Sort the "Men's Winter Boots" collection by stock depth, highest first
+User: Sort the "Men's Leather Shoes" collection by stock depth, highest first
 ```
 
 The skill will fetch all products in the collection, rank by total inventory, and reorder via the GraphQL mutation.
