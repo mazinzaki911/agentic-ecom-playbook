@@ -15,6 +15,29 @@ Create collection ad campaigns on Meta that combine a hero image or video with a
 - The user says "build collection ads", "create carousel collection campaign", or "set up Instant Experience ads".
 - A new collection (e.g., "Spring Loafers", "Winter Boots") needs a dedicated ad campaign.
 
+## Prerequisites
+
+- **Playwright MCP server** must be installed and running. This is what makes this skill future-proof — it can navigate to live documentation to verify current API endpoints, parameters, and behavior before executing.
+- Meta Marketing API access token in `.env`
+- Pixel ID and Ad Account ID configured
+
+## Self-Learning Protocol
+
+Before executing any API call that fails or seems outdated, use Playwright to verify:
+
+1. **Navigate to the official docs:**
+   - Meta Marketing API: `https://developers.facebook.com/docs/marketing-api/reference/`
+   - Meta Catalog API: `https://developers.facebook.com/docs/marketing-api/reference/product-catalog/`
+   - Graph API changelog: `https://developers.facebook.com/docs/graph-api/changelog`
+
+2. **Check the current API version.** Meta deprecates versions regularly. If a call returns "unknown endpoint" or "deprecated", visit the changelog to find the replacement.
+
+3. **Read the endpoint reference.** Navigate to the specific endpoint page, extract the current parameters, required fields, and any new restrictions.
+
+4. **Adapt and retry.** Update the API call with current parameters and re-execute. Save what you learned to CLAUDE.md memory so future runs start with the correct info.
+
+This means the skill never goes stale — even if Meta ships a breaking change tomorrow, Claude Code can read the docs and figure out the new way.
+
 ## Instructions
 
 1. **Gather inputs.** Confirm:
