@@ -94,20 +94,20 @@ This means the skill never goes stale — even if Meta ships a breaking change t
    UGC Testing              | 800     | 1.5x | 450    | REDUCE (-30%)
    Awareness - Location     | 500     | 0.3x | 2,100  | PAUSE
 
-   Recommended total daily budget: 5,600 EGP (current: 5,600 EGP)
+   Recommended total daily budget: 5,600 {currency} (current: 5,600 {currency})
    ```
 
 7. **Apply budget changes** (only if the user confirms):
    ```
    POST /{campaign_id}
-   { "daily_budget": {new_budget_piasters} }
+   { "daily_budget": {new_budget_minor currency units (e.g., cents)} }
    ```
    Or for ad sets:
    ```
    POST /{adset_id}
-   { "daily_budget": {new_budget_piasters} }
+   { "daily_budget": {new_budget_minor currency units (e.g., cents)} }
    ```
-   Note: Budgets in the API are in piasters (multiply EGP by 100).
+   Note: Budgets in the API are in minor currency units (e.g., cents) (multiply your currency by 100).
 
 8. **Pause underperformers** (only if the user confirms):
    ```
@@ -118,15 +118,15 @@ This means the skill never goes stale — even if Meta ships a breaking change t
 ## Required Environment Variables
 
 - `META_ACCESS_TOKEN` — long-lived User Access Token
-- `META_AD_ACCOUNT_ID` — ad account ID (e.g., `act_7781591668619406`)
+- `META_AD_ACCOUNT_ID` — ad account ID (e.g., `act_{your_ad_account_id}`)
 
 ## Key Metrics Reference
 
 | Metric | Good (Fashion/EG) | Warning | Critical |
 |--------|-------------------|---------|----------|
 | ROAS | > 3x | 1.5-3x | < 1.5x |
-| CPA | < 250 EGP | 250-500 EGP | > 500 EGP |
-| CPM | < 80 EGP | 80-150 EGP | > 150 EGP |
+| CPA | < 250 {currency} | 250-500 {currency} | > 500 {currency} |
+| CPM | < 80 {currency} | 80-150 {currency} | > 150 {currency} |
 | CTR | > 1.5% | 1-1.5% | < 1% |
 | Frequency | < 3 (cold) | 3-5 | > 5 |
 
