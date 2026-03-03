@@ -122,7 +122,7 @@ This means the skill never goes stale — even if Shopify changes their API sche
 ## Example Usage
 
 ```
-User: Deploy the updated sale-badge snippet and the winter-sale section to the live theme
+User: Deploy the updated sale-badge snippet and the seasonal-sale section to the live theme
 ```
 
 The skill will backup existing files, deploy the snippet first, then the section, and verify both are live.
