@@ -15,7 +15,7 @@ Automate bulk pricing operations on Shopify: apply percentage discounts to varia
 - The user says "set sale prices", "update compare-at price", or "apply discount".
 - Prices need to be rounded after discount calculation.
 - The user wants to revert products to their original prices after a promotion.
-- A BOGO (buy-one-get-one) or end-of-season pricing change is needed.
+- A promotional or end-of-season pricing change is needed.
 
 ## Prerequisites
 
