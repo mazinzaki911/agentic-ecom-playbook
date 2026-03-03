@@ -17,6 +17,29 @@ Create and update metafields on Shopify resources (products, variants, collectio
 - A theme section reads from a metafield that needs to be populated.
 - Metafield definitions need to be created before setting values.
 
+## Prerequisites
+
+- **Playwright MCP server** must be installed and running. This is what makes this skill future-proof — it can navigate to live documentation to verify current API endpoints, parameters, and behavior before executing.
+- Shopify Admin API access token in `.env`
+- Store URL configured (`SHOPIFY_SHOP`)
+
+## Self-Learning Protocol
+
+Before executing any API call that fails or seems outdated, use Playwright to verify:
+
+1. **Navigate to the official docs:**
+   - Shopify Admin GraphQL API: `https://shopify.dev/docs/api/admin-graphql`
+   - Shopify REST Admin API: `https://shopify.dev/docs/api/admin-rest`
+   - API version changelog: `https://shopify.dev/docs/api/release-notes`
+
+2. **Check the current API version.** Shopify deprecates API versions quarterly. If a mutation or query returns unexpected errors, visit the release notes to find what changed.
+
+3. **Read the endpoint reference.** Navigate to the specific mutation/query page, extract the current fields, input types, and any new requirements.
+
+4. **Adapt and retry.** Update the GraphQL query or REST call with current parameters and re-execute. Save what you learned to CLAUDE.md memory so future runs start with the correct info.
+
+This means the skill never goes stale — even if Shopify changes their API schema tomorrow, Claude Code can read the docs and figure out the new way.
+
 ## Instructions
 
 1. **Check if the metafield definition exists.** Before setting values, verify the definition:
