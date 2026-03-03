@@ -1214,7 +1214,6 @@ figure.screenshot img {
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-xl);
     border: 1px solid var(--smoke);
-    cursor: zoom-in;
     transition: transform var(--transition-smooth), box-shadow var(--transition-smooth);
 }
 
@@ -1231,36 +1230,6 @@ figure.screenshot figcaption {
     letter-spacing: 0.2px;
 }
 
-/* Image lightbox */
-.lightbox-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(12,14,18,0.92);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    z-index: 9999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: zoom-out;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity var(--transition-smooth);
-    padding: 40px;
-}
-
-.lightbox-overlay.active { opacity: 1; pointer-events: auto; }
-
-.lightbox-overlay img {
-    max-width: 95%;
-    max-height: 90vh;
-    border-radius: var(--radius-lg);
-    box-shadow: 0 32px 80px rgba(0,0,0,0.5);
-    transform: scale(0.95);
-    transition: transform var(--transition-spring);
-}
-
-.lightbox-overlay.active img { transform: scale(1); }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 /*  CHECKLIST                                          */
@@ -10689,30 +10658,6 @@ META_PIXEL_ID=your-pixel-id
         elements.forEach(el => observer.observe(el));
     }
 
-    // ─── Image Lightbox ───
-    function setupLightbox() {
-        const overlay = document.createElement('div');
-        overlay.className = 'lightbox-overlay';
-        document.body.appendChild(overlay);
-
-        overlay.addEventListener('click', () => {
-            overlay.classList.remove('active');
-            setTimeout(() => { overlay.innerHTML = ''; }, 300);
-        });
-
-        document.querySelectorAll('figure.screenshot img').forEach(img => {
-            img.addEventListener('click', () => {
-                const clone = document.createElement('img');
-                clone.src = img.src;
-                clone.alt = img.alt;
-                overlay.innerHTML = '';
-                overlay.appendChild(clone);
-                // Force reflow then animate
-                overlay.offsetHeight;
-                overlay.classList.add('active');
-            });
-        });
-    }
 
     // ─── Reading Time ───
     function showReadingTime() {
@@ -10738,7 +10683,6 @@ META_PIXEL_ID=your-pixel-id
         setupBackToTop();
         enhanceCodeBlocks();
         setupScrollReveal();
-        setupLightbox();
         showReadingTime();
     });
 })();
