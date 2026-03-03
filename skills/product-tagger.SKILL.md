@@ -13,7 +13,7 @@ Add or remove tags on Shopify products in bulk. Tags drive collection membership
 
 - The user wants to add or remove tags on products.
 - The user says "tag products", "add tag", "remove tag", or "untag".
-- A campaign or sale requires products to be tagged (e.g., "SALEJAN", "winter-sale", "bogo").
+- A campaign or sale requires products to be tagged (e.g., "seasonal-sale", "seasonal-sale", "buy-one-get-one").
 - Tags need to be cleaned up after a promotion ends.
 - Products in a collection need a common tag applied.
 
@@ -82,7 +82,7 @@ This means the skill never goes stale — even if Shopify changes their API sche
 5. **Apply tags using tagsAdd/tagsRemove mutations** (preferred for add/remove):
    ```graphql
    mutation {
-     tagsAdd(id: "gid://shopify/Product/{id}", tags: ["winter-sale", "30-off"]) {
+     tagsAdd(id: "gid://shopify/Product/{id}", tags: ["seasonal-sale", "30-off"]) {
        node { ... on Product { id tags } }
        userErrors { field message }
      }
@@ -90,7 +90,7 @@ This means the skill never goes stale — even if Shopify changes their API sche
    ```
    ```graphql
    mutation {
-     tagsRemove(id: "gid://shopify/Product/{id}", tags: ["SALEJAN"]) {
+     tagsRemove(id: "gid://shopify/Product/{id}", tags: ["seasonal-sale"]) {
        node { ... on Product { id tags } }
        userErrors { field message }
      }
@@ -132,7 +132,7 @@ This means the skill never goes stale — even if Shopify changes their API sche
    ```
    Tagging Summary
    ===============
-   Operation: ADD tags ["winter-sale", "30-off"]
+   Operation: ADD tags ["seasonal-sale", "30-off"]
    Products processed: 147
    Successful: 145
    Errors: 2 (Product X: permission denied, Product Y: not found)
@@ -146,13 +146,13 @@ This means the skill never goes stale — even if Shopify changes their API sche
 ## Example Usage
 
 ```
-User: Add the "end-of-season" tag to all products in the Winter Boots collection
+User: Add the "clearance" tag to all products in the Winter Boots collection
 ```
 
 The skill will fetch all products in the collection, add the tag to each, and report results.
 
 ```
-User: Remove the "SALEJAN" tag from all products
+User: Remove the "seasonal-sale" tag from all products
 ```
 
-The skill will find all products with the SALEJAN tag and remove it in bulk.
+The skill will find all products with the seasonal-sale tag and remove it in bulk.
