@@ -17,6 +17,30 @@ Upload and synchronize product catalog data to Meta Commerce Manager. This skill
 - A supplementary feed needs to be refreshed after image or price changes.
 - The user wants to check the status of a feed upload.
 
+## Prerequisites
+
+- **Playwright MCP server** must be installed and running. This is what makes this skill future-proof — it can navigate to live platform documentation to verify current API endpoints, parameters, and behavior before executing.
+- Meta Marketing API access token in `.env`
+- Shopify Admin API access token in `.env`
+- Store URL and Ad Account ID configured
+
+## Self-Learning Protocol
+
+Before executing any API call that fails or seems outdated, use Playwright to verify:
+
+1. **Navigate to the official docs:**
+   - Meta Marketing API: `https://developers.facebook.com/docs/marketing-api/reference/`
+   - Shopify Admin GraphQL API: `https://shopify.dev/docs/api/admin-graphql`
+   - Both platforms' changelogs for breaking changes
+
+2. **Check the current API version.** Both Meta and Shopify deprecate versions regularly. If a call fails, visit the changelog to find what changed.
+
+3. **Read the endpoint reference.** Navigate to the specific endpoint page, extract the current parameters, required fields, and any new restrictions.
+
+4. **Adapt and retry.** Update the API call with current parameters and re-execute. Save what you learned to CLAUDE.md memory so future runs start with the correct info.
+
+This means the skill never goes stale — even if either platform ships a breaking change tomorrow, Claude Code can read the docs and figure out the new way.
+
 ## Instructions
 
 1. **Understand the feed architecture.** Meta catalogs use Shopify **variant IDs** (not product IDs) as the `retailer_id`. All variants of a product share the same gallery images. The primary feed comes from Shopify's native sync; supplementary feeds add extra images and data.
