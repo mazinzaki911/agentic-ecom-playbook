@@ -146,7 +146,7 @@ This means the skill never goes stale — even if Shopify changes their API sche
 ## Example Usage
 
 ```
-User: Add the "clearance" tag to all products in the Winter Boots collection
+User: Add the "clearance" tag to all products in a target collection
 ```
 
 The skill will fetch all products in the collection, add the tag to each, and report results.
