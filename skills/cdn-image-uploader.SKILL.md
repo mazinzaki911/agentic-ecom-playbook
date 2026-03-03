@@ -145,7 +145,7 @@ This means the skill never goes stale — even if Shopify changes their API sche
 
 ## Required Environment Variables
 
-- `SHOPIFY_STORE_URL` — Shopify store URL (e.g., `achilles-stores.myshopify.com`)
+- `SHOPIFY_STORE_URL` — Shopify store URL (e.g., `your-store.myshopify.com`)
 - `SHOPIFY_ACCESS_TOKEN` — Admin API access token with `write_files` scope
 
 ## Key Files
