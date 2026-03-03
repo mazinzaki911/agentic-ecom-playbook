@@ -15,7 +15,7 @@ Automate bulk pricing operations on Shopify: apply percentage discounts to varia
 - The user says "set sale prices", "update compare-at price", or "apply discount".
 - Prices need to be rounded after discount calculation.
 - The user wants to revert products to their original prices after a promotion.
-- A BOGO or end-of-season pricing change is needed.
+- A BOGO (buy-one-get-one) or end-of-season pricing change is needed.
 
 ## Prerequisites
 
@@ -45,14 +45,14 @@ This means the skill never goes stale — even if Shopify changes their API sche
 1. **Identify target products.** Accept:
    - A collection handle or ID
    - A list of product IDs or variant IDs
-   - A tag-based filter (e.g., all products tagged "SALEJAN")
+   - A tag-based filter (e.g., all products tagged "seasonal-sale")
    - A JSON file with product data (e.g., `data/active/end-of-season-products.json`)
 
 2. **Determine the pricing operation:**
    - **Apply discount**: Set `price = compare_at_price * (1 - discount_rate)`. The `compare_at_price` becomes the original price (strikethrough in storefront).
    - **Set compare-at**: Set `compare_at_price` to the current price, then reduce `price`.
    - **Clear compare-at**: Remove `compare_at_price` (set to null) to end a sale.
-   - **Round prices**: Round to nearest 5 or 10 EGP (e.g., 742 -> 740, 748 -> 750).
+   - **Round prices**: Round to nearest 5 or 10 {currency} (e.g., 742 -> 740, 748 -> 750).
 
 3. **Fetch current prices** for all target variants:
    ```graphql
@@ -134,7 +134,7 @@ This means the skill never goes stale — even if Shopify changes their API sche
 ## Example Usage
 
 ```
-User: Apply 25% off to all products tagged "winter-sale" and round to nearest 10 EGP
+User: Apply 25% off to all products tagged "seasonal-sale" and round to nearest 10 {currency}
 ```
 
-The skill will fetch all winter-sale products, calculate discounted prices, round them, backup originals, and apply via GraphQL.
+The skill will fetch all seasonal-sale products, calculate discounted prices, round them, backup originals, and apply via GraphQL.
