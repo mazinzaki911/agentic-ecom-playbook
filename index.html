@@ -17,6 +17,7 @@
     --slate: #2D3142;
     --copper: #C67C3B;
     --ember: #E8913A;
+    --copper-glow: rgba(198,124,59,0.15);
     --sage: #3D8B67;
     --arctic: #4B7FBA;
     --parchment: #FAF8F5;
@@ -38,18 +39,23 @@
     --font-body: 'Plus Jakarta Sans', -apple-system, sans-serif;
     --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
 
-    --shadow-sm: 0 1px 2px rgba(12,14,18,0.04), 0 1px 3px rgba(12,14,18,0.06);
-    --shadow-md: 0 2px 4px rgba(12,14,18,0.04), 0 4px 12px rgba(12,14,18,0.08);
-    --shadow-lg: 0 4px 8px rgba(12,14,18,0.04), 0 12px 32px rgba(12,14,18,0.12);
+    --shadow-sm: 0 1px 2px rgba(12,14,18,0.05), 0 1px 3px rgba(12,14,18,0.07);
+    --shadow-md: 0 4px 6px rgba(12,14,18,0.04), 0 8px 24px rgba(12,14,18,0.08);
+    --shadow-lg: 0 8px 16px rgba(12,14,18,0.06), 0 20px 48px rgba(12,14,18,0.12);
+    --shadow-xl: 0 12px 28px rgba(12,14,18,0.08), 0 32px 64px rgba(12,14,18,0.14);
 
-    --radius-sm: 4px;
-    --radius-md: 8px;
-    --radius-lg: 12px;
-    --radius-xl: 16px;
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 14px;
+    --radius-xl: 20px;
 
     --sidebar-width: 300px;
     --topbar-height: 56px;
     --content-max-width: 820px;
+
+    --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-spring: 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 /* === RESET === */
@@ -59,11 +65,28 @@ html { scroll-behavior: smooth; }
 body {
     font-family: var(--font-body);
     font-size: 16px;
-    line-height: 1.7;
+    line-height: 1.75;
     color: var(--graphite);
     background: var(--parchment);
     overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
 }
+
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(198,124,59,0.2); border-radius: 6px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(198,124,59,0.35); }
+* { scrollbar-width: thin; scrollbar-color: rgba(198,124,59,0.2) transparent; }
+
+/* Scroll-reveal animation */
+.reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* Selection */
+::selection { background: rgba(198,124,59,0.2); color: var(--anthracite); }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 /*  APP LAYOUT                                         */
@@ -82,19 +105,21 @@ body {
     left: 0;
     width: var(--sidebar-width);
     height: 100vh;
-    background: var(--anthracite);
+    background: linear-gradient(180deg, #1A1D26 0%, #141720 50%, #111318 100%);
     color: white;
     display: flex;
     flex-direction: column;
     z-index: 100;
-    transition: transform 0.3s ease;
+    transition: transform var(--transition-smooth);
     overflow: hidden;
+    border-right: 1px solid rgba(198,124,59,0.06);
 }
 
 .sidebar-header {
     padding: 24px 20px 16px 20px;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
     flex-shrink: 0;
+    background: rgba(198,124,59,0.03);
 }
 
 .sidebar-header h2 {
@@ -106,6 +131,7 @@ body {
     border: none;
     margin: 0;
     padding: 0;
+    letter-spacing: -0.2px;
 }
 
 .sidebar-header .subtitle {
@@ -113,6 +139,7 @@ body {
     color: var(--copper);
     margin-top: 4px;
     font-style: italic;
+    letter-spacing: 0.3px;
 }
 
 /* Search */
@@ -414,10 +441,10 @@ body {
     position: sticky;
     top: 0;
     z-index: 50;
-    background: rgba(250,248,245,0.92);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--smoke);
+    background: rgba(250,248,245,0.85);
+    backdrop-filter: blur(20px) saturate(1.2);
+    -webkit-backdrop-filter: blur(20px) saturate(1.2);
+    border-bottom: 1px solid rgba(229,226,220,0.6);
     height: var(--topbar-height);
     display: flex;
     align-items: center;
@@ -456,10 +483,18 @@ body {
 
 .progress-fill {
     height: 100%;
-    background: var(--copper);
+    background: linear-gradient(90deg, var(--copper) 0%, var(--ember) 100%);
     width: 0%;
     transition: width 0.15s ease;
     border-radius: 3px;
+}
+
+.reading-time {
+    font-size: 11px;
+    color: var(--pewter);
+    white-space: nowrap;
+    flex-shrink: 0;
+    font-weight: 500;
 }
 
 /* Content inner */
@@ -472,11 +507,20 @@ body {
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 /*  HERO / COVER                                       */
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+@keyframes heroGlow {
+    0%, 100% { opacity: 0.4; transform: translate(-50%,-50%) scale(1); }
+    50% { opacity: 0.7; transform: translate(-50%,-50%) scale(1.1); }
+}
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
 .hero {
     text-align: center;
-    padding: 80px 40px 60px 40px;
+    padding: 90px 40px 70px 40px;
     margin: 0;
-    background: var(--anthracite);
+    background: linear-gradient(160deg, #1A1D26 0%, #1E2130 40%, #1A1D26 70%, #16181F 100%);
     position: relative;
     overflow: hidden;
 }
@@ -484,26 +528,36 @@ body {
 .hero::before {
     content: '';
     position: absolute;
-    top: -100px;
-    right: -100px;
-    width: 380px;
-    height: 380px;
-    border: 1.5px solid rgba(198,124,59,0.1);
+    top: 20%;
+    left: 60%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(198,124,59,0.08) 0%, transparent 70%);
     border-radius: 50%;
     pointer-events: none;
+    animation: heroGlow 8s ease-in-out infinite;
 }
 
 .hero::after {
     content: '';
     position: absolute;
-    bottom: -60px;
-    left: -60px;
-    width: 260px;
-    height: 260px;
-    border: 1.5px solid rgba(198,124,59,0.07);
+    bottom: -10%;
+    left: -5%;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(75,127,186,0.05) 0%, transparent 70%);
     border-radius: 50%;
     pointer-events: none;
+    animation: heroGlow 10s ease-in-out infinite reverse;
 }
+
+.hero > * { animation: fadeUp 0.8s ease both; }
+.hero h1 { animation-delay: 0.1s; }
+.hero .hero-rule { animation-delay: 0.2s; }
+.hero h3 { animation-delay: 0.3s; }
+.hero .hero-description { animation-delay: 0.4s; }
+.hero .hero-highlights { animation-delay: 0.5s; }
+.hero .hero-credits { animation-delay: 0.6s; }
 
 .hero h1 {
     font-family: var(--font-display);
@@ -644,12 +698,12 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    min-height: 320px;
+    min-height: 340px;
     text-align: center;
-    background: var(--anthracite);
+    background: linear-gradient(160deg, #1A1D26 0%, #1E2130 40%, #1A1D26 100%);
     color: white;
     padding: 60px 40px;
-    margin: 48px -40px;
+    margin: 56px -40px;
     position: relative;
     overflow: hidden;
     border-radius: 0;
@@ -661,11 +715,21 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 280px;
-    height: 280px;
-    border: 1.5px solid rgba(198,124,59,0.1);
+    width: 350px;
+    height: 350px;
+    background: radial-gradient(circle, rgba(198,124,59,0.06) 0%, transparent 70%);
     border-radius: 50%;
     pointer-events: none;
+}
+
+.part-divider::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(198,124,59,0.2), transparent);
 }
 
 .part-title {
@@ -694,13 +758,26 @@ body {
 /*  CHAPTER HEADERS                                    */
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 .chapter-header {
-    background: var(--anthracite);
+    background: linear-gradient(135deg, var(--anthracite) 0%, #1E2130 100%);
     color: white;
-    padding: 32px 36px 24px 36px;
-    margin: 48px 0 28px 0;
+    padding: 36px 40px 28px 40px;
+    margin: 56px 0 32px 0;
     border-radius: var(--radius-lg);
-    border-left: 5px solid var(--copper);
+    border-left: 4px solid var(--copper);
     position: relative;
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+}
+
+.chapter-header::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 200px;
+    height: 100%;
+    background: radial-gradient(circle at 100% 50%, rgba(198,124,59,0.06) 0%, transparent 70%);
+    pointer-events: none;
 }
 
 .chapter-title {
@@ -814,11 +891,16 @@ h3.after-header {
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 /*  TEXT ELEMENTS                                      */
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-p { margin: 0 0 14px 0; }
+p { margin: 0 0 16px 0; }
 strong { font-weight: 600; color: var(--anthracite); }
 em { font-style: italic; color: var(--pewter); }
-a { color: var(--arctic); text-decoration: none; border-bottom: 1px solid rgba(75,127,186,0.25); }
-a:hover { border-bottom-color: var(--arctic); }
+a {
+    color: var(--arctic);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(75,127,186,0.2);
+    transition: color var(--transition-fast), border-color var(--transition-fast);
+}
+a:hover { color: var(--copper); border-bottom-color: var(--copper); }
 
 ul, ol { margin: 10px 0 16px 24px; }
 li { margin: 6px 0; line-height: 1.65; }
@@ -829,27 +911,84 @@ li > ul, li > ol { margin: 4px 0 4px 20px; }
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 code {
     font-family: var(--font-mono);
-    font-size: 0.88em;
-    background: var(--cream);
+    font-size: 0.86em;
+    background: rgba(198,124,59,0.06);
     color: var(--copper);
-    padding: 2px 7px;
+    padding: 2px 8px;
     border-radius: var(--radius-sm);
     font-weight: 500;
-    border: 1px solid var(--smoke);
+    border: 1px solid rgba(198,124,59,0.12);
+}
+
+.code-block-wrapper {
+    position: relative;
+    margin: 20px 0;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid rgba(198,124,59,0.08);
+}
+
+.code-block-wrapper .code-lang {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 4px 14px;
+    background: rgba(198,124,59,0.15);
+    color: var(--copper);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    border-bottom-right-radius: var(--radius-sm);
+    z-index: 2;
+}
+
+.code-copy-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    padding: 5px 12px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 6px;
+    color: rgba(255,255,255,0.4);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    cursor: pointer;
+    z-index: 2;
+    transition: all var(--transition-fast);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.code-copy-btn:hover {
+    background: rgba(255,255,255,0.12);
+    color: rgba(255,255,255,0.8);
+    border-color: rgba(255,255,255,0.2);
+}
+
+.code-copy-btn.copied {
+    color: var(--sage);
+    border-color: rgba(61,139,103,0.3);
+    background: rgba(61,139,103,0.1);
 }
 
 pre {
-    background: var(--ink);
+    background: linear-gradient(180deg, #0E1017 0%, #0C0E12 100%);
     color: #CBD5E1;
-    padding: 20px 24px;
-    border-radius: var(--radius-md);
+    padding: 24px 24px 20px 24px;
+    border-radius: 0;
     overflow-x: auto;
-    margin: 16px 0;
+    margin: 0;
     font-family: var(--font-mono);
-    font-size: 14px;
-    line-height: 1.6;
-    box-shadow: var(--shadow-lg);
-    border: 1px solid rgba(198,124,59,0.08);
+    font-size: 13.5px;
+    line-height: 1.7;
+    border: none;
+    box-shadow: none;
+    counter-reset: line;
 }
 
 pre code {
@@ -861,35 +1000,44 @@ pre code {
     border: none;
 }
 
+/* Syntax-like highlighting for common tokens */
+pre .comment { color: #64748B; font-style: italic; }
+pre .string { color: #A5D6A7; }
+pre .keyword { color: #CE93D8; }
+
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 /*  TABLES                                             */
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 .table-container {
-    margin: 20px 0;
+    margin: 24px 0;
     overflow-x: auto;
-    border-radius: var(--radius-md);
-    box-shadow: var(--shadow-sm);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
     border: 1px solid var(--smoke);
+    background: white;
 }
 
 table { width: 100%; border-collapse: collapse; font-size: 14px; }
-thead { background: var(--anthracite); }
+thead { background: linear-gradient(135deg, var(--anthracite) 0%, var(--slate) 100%); }
 thead th {
     color: white;
     font-weight: 600;
-    padding: 12px 16px;
+    padding: 14px 18px;
     text-align: left;
-    font-size: 12px;
-    letter-spacing: 0.5px;
+    font-size: 11px;
+    letter-spacing: 0.8px;
     text-transform: uppercase;
 }
 thead th:first-child { border-left: 3px solid var(--copper); }
 tbody td {
-    padding: 11px 16px;
+    padding: 12px 18px;
     border-bottom: 1px solid var(--smoke-light);
     vertical-align: top;
+    transition: background var(--transition-fast);
 }
-tbody tr:nth-child(even) { background: var(--cream); }
+tbody tr:nth-child(even) { background: rgba(243,239,232,0.5); }
+tbody tr { transition: background var(--transition-fast); }
+tbody tr:hover { background: rgba(198,124,59,0.04); }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 /*  BLOCKQUOTES                                        */
@@ -920,16 +1068,22 @@ blockquote strong { color: var(--anthracite); }
 /*  SKILL CARDS                                        */
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 .skill-download-card {
-    margin: 24px 0;
+    margin: 28px 0;
     border-radius: var(--radius-lg);
     overflow: hidden;
     background: white;
     border: 1px solid var(--smoke);
     box-shadow: var(--shadow-md);
+    transition: box-shadow var(--transition-smooth), transform var(--transition-smooth);
+}
+
+.skill-download-card:hover {
+    box-shadow: var(--shadow-xl);
+    transform: translateY(-2px);
 }
 
 .skill-header {
-    background: linear-gradient(135deg, var(--copper) 0%, var(--ember) 100%);
+    background: linear-gradient(135deg, var(--copper) 0%, var(--ember) 50%, #D4915A 100%);
     padding: 10px 20px;
     display: flex;
     align-items: center;
@@ -1022,7 +1176,7 @@ ul.skill-capabilities li::before {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    padding: 9px 22px;
+    padding: 10px 24px;
     background: var(--anthracite);
     color: white;
     font-family: var(--font-body);
@@ -1032,12 +1186,15 @@ ul.skill-capabilities li::before {
     text-decoration: none;
     border: none;
     border-bottom: none;
-    transition: background 0.2s;
+    transition: all var(--transition-smooth);
+    box-shadow: 0 2px 8px rgba(26,29,38,0.15);
 }
 
 .skill-download-btn:hover {
-    background: var(--slate);
+    background: var(--copper);
     border-bottom: none;
+    box-shadow: 0 4px 16px rgba(198,124,59,0.3);
+    transform: translateY(-1px);
 }
 
 .skill-download-btn-icon { font-size: 15px; line-height: 1; }
@@ -1046,40 +1203,63 @@ ul.skill-capabilities li::before {
 /*  SCREENSHOTS                                        */
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 figure.screenshot {
-    margin: 28px auto;
+    margin: 32px auto;
     text-align: center;
-    max-width: 85%;
+    max-width: 90%;
 }
 
 figure.screenshot img {
     max-width: 100%;
     height: auto;
-    border-radius: var(--radius-md);
-    box-shadow: var(--shadow-lg);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-xl);
     border: 1px solid var(--smoke);
     cursor: zoom-in;
-    transition: transform 0.3s ease;
+    transition: transform var(--transition-smooth), box-shadow var(--transition-smooth);
 }
 
-figure.screenshot img:hover { transform: scale(1.02); }
+figure.screenshot img:hover {
+    transform: scale(1.015);
+    box-shadow: 0 16px 40px rgba(12,14,18,0.16), 0 40px 80px rgba(12,14,18,0.12);
+}
 
 figure.screenshot figcaption {
-    margin-top: 12px;
-    font-size: 13px;
+    margin-top: 14px;
+    font-size: 12px;
     color: var(--pewter);
     font-style: italic;
+    letter-spacing: 0.2px;
 }
 
-.screenshot-placeholder {
-    margin: 20px auto;
-    padding: 28px;
-    background: var(--cream);
-    border: 1.5px dashed var(--smoke);
-    border-radius: var(--radius-md);
-    text-align: center;
-    color: var(--pewter);
-    max-width: 70%;
+/* Image lightbox */
+.lightbox-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(12,14,18,0.92);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: zoom-out;
+    opacity: 0;
+    transition: opacity var(--transition-smooth);
+    padding: 40px;
 }
+
+.lightbox-overlay.active { opacity: 1; }
+
+.lightbox-overlay img {
+    max-width: 95%;
+    max-height: 90vh;
+    border-radius: var(--radius-lg);
+    box-shadow: 0 32px 80px rgba(0,0,0,0.5);
+    transform: scale(0.95);
+    transition: transform var(--transition-spring);
+}
+
+.lightbox-overlay.active img { transform: scale(1); }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 /*  CHECKLIST                                          */
@@ -1253,11 +1433,11 @@ hr { border: none; height: 1px; background: var(--smoke); margin: 28px 0; }
     position: fixed;
     bottom: 28px;
     right: 28px;
-    width: 42px;
-    height: 42px;
+    width: 44px;
+    height: 44px;
     background: var(--anthracite);
     color: white;
-    border: none;
+    border: 1px solid rgba(198,124,59,0.15);
     border-radius: 50%;
     font-size: 18px;
     cursor: pointer;
@@ -1266,9 +1446,9 @@ hr { border: none; height: 1px; background: var(--smoke); margin: 28px 0; }
     justify-content: center;
     opacity: 0;
     transform: translateY(10px);
-    transition: all 0.3s ease;
+    transition: all var(--transition-smooth);
     z-index: 50;
-    box-shadow: var(--shadow-md);
+    box-shadow: var(--shadow-lg);
 }
 
 .back-to-top.visible {
@@ -1276,7 +1456,12 @@ hr { border: none; height: 1px; background: var(--smoke); margin: 28px 0; }
     transform: translateY(0);
 }
 
-.back-to-top:hover { background: var(--copper); }
+.back-to-top:hover {
+    background: var(--copper);
+    border-color: var(--copper);
+    box-shadow: 0 8px 24px rgba(198,124,59,0.3);
+    transform: translateY(-2px);
+}
 
 /* Overlay for mobile sidebar */
 .sidebar-overlay {
@@ -1373,6 +1558,7 @@ hr { border: none; height: 1px; background: var(--smoke); margin: 28px 0; }
         <div class="top-bar">
             <button class="menu-toggle" aria-label="Open menu">&#9776;</button>
             <div class="current-section">The Agentic Ecom Playbook</div>
+            <div class="reading-time"></div>
             <div class="progress-bar"><div class="progress-fill"></div></div>
         </div>
         
@@ -1706,8 +1892,6 @@ Total: ~90 seconds
 <p><strong>Every section from Section 3 onwards gives you a downloadable Claude Skill.</strong> These are pre-written instruction files that you drop into a folder on your computer. Once installed, you can trigger them by typing a simple command like <code>/create-campaign</code> or <code>/check-inventory</code>. You don't need to write these yourself — just copy and paste.</p>
 <p><strong>Look for the Skill Download boxes.</strong> They look like this:</p>
 <div class="skill-download-card"><div class="skill-header"><span class="skill-icon">&#9889;</span><span class="skill-label">SKILL DOWNLOAD</span></div><div class="skill-name">Campaign Creator</div><div class="skill-field"><span class="skill-field-label">What it does:</span> Creates a complete Meta campaign — objective, budget, audience, creative — via a single command.</div><div class="skill-install">Tell Claude Code: "Install the media-buying-sop-pack skill from https://raw.githubusercontent.com/mazinzaki911/agentic-ecom-playbook/main/skills/media-buying-sop-pack.SKILL.md"</div><div class="skill-quickstart">Type <code>/create-campaign</code> in Claude Code</div><ul class="skill-capabilities"><li>Walks you through campaign setup interactively</li><li>Generates complete Meta API v25.0 code</li><li>Validates all parameters before submission</li></ul><div class="skill-download-btn-wrap"><a href="https://raw.githubusercontent.com/mazinzaki911/agentic-ecom-playbook/main/skills/media-buying-sop-pack.SKILL.md" class="skill-download-btn" target="_blank"><span class="skill-download-btn-icon">&#8595;</span> Download Skill</a></div></div>
-<div class="screenshot-placeholder">ads-manager-campaign-created</div>
-
 <p><strong>Troubleshooting sections appear at the end of each section.</strong> If something doesn't work, check there first. The most common issues — expired tokens, wrong permissions, typos in configuration — are all covered with clear solutions.</p>
 <p><strong>The playbook is split into five parts:</strong></p>
 <div class="table-container"><table>
@@ -4112,24 +4296,18 @@ Recommendation: Refresh your token within the next 5 days
 <p>"I just created the Spring-Women-DPA campaign. Open Ads Manager and take a screenshot showing the new campaign in the campaign list."</p>
 </blockquote>
 <p>Claude Code navigates to your Ads Manager, locates the campaign in the list, and captures a screenshot. You get visual confirmation that the campaign exists, has the right name, and shows the correct status -- all without logging in yourself.</p>
-<div class="screenshot-placeholder">ads-manager-campaign-verification.png -- screenshot of Ads Manager showing a newly created campaign with correct name and Active status</div>
-
 <h3 id="post-price-update-verify-the-storefront">Post-Price Update: Verify the Storefront</h3>
 <p>After running a script to apply discounts across your Winter Collection:</p>
 <blockquote>
 <p>"Take a screenshot of the Winter Boots - Classic Chelsea product page on our storefront. Confirm the price shows the discounted amount with the original price crossed out."</p>
 </blockquote>
 <p>Claude Code opens your store, navigates to the product page, and reads the displayed prices. If the sale price is showing correctly with a strikethrough on the compare-at price, it confirms success. If something looks wrong -- the discount was not applied, or the compare-at price is missing -- it tells you immediately.</p>
-<div class="screenshot-placeholder">storefront-price-verification.png -- product page showing sale price and crossed-out original price</div>
-
 <h3 id="post-collection-update-confirm-products-display">Post-Collection Update: Confirm Products Display</h3>
 <p>After creating or updating a collection:</p>
 <blockquote>
 <p>"Open our Lucky Sizes collection page and verify that products are displaying correctly. Take a screenshot of the first row."</p>
 </blockquote>
 <p>Claude Code loads the collection page, confirms that product cards are rendering with images and prices, and saves a screenshot for your records. This catches issues like empty collections (products not properly tagged), broken images, or sorting problems.</p>
-<div class="screenshot-placeholder">collection-verification.png -- collection page showing product grid with images and prices</div>
-
 <h3 id="automated-health-checks-catch-problems-before-customers-do">Automated Health Checks: Catch Problems Before Customers Do</h3>
 <p>Beyond one-off verifications, you can run periodic sweeps of your storefront:</p>
 <blockquote>
@@ -4276,8 +4454,6 @@ Recommendation: Refresh your token within the next 5 days
 <p><strong>URL:</strong> <code>developers.facebook.com/tools/explorer/</code></p>
 <p>This is the hidden gem that most non-developers never discover. The Explorer is a live, interactive tool where you can make real API calls from your browser. No code needed. You select GET or POST, type in an endpoint, add your parameters, click Submit, and see the actual response from Meta's servers.</p>
 <p>Think of it as a test kitchen. Before you cook the full meal (write a script), you can taste-test individual ingredients (API calls) to make sure they work. Did you get the parameter name right? Does your access token have the right permissions? What does the response actually look like? The Explorer answers all of these questions in seconds.</p>
-<div class="screenshot-placeholder">Graph API Explorer interface showing the method selector, endpoint field, parameters panel, and response area</div>
-
 <h3 id="4-changelog-the-newspaper">4. Changelog -- The Newspaper</h3>
 <p><strong>URL:</strong> <code>developers.facebook.com/docs/graph-api/changelog/</code></p>
 <p>Every few months, Meta releases a new version of their API. Each release comes with a changelog -- a list of what changed, what was added, and critically, what was removed or renamed.</p>
@@ -4306,8 +4482,6 @@ Recommendation: Refresh your token within the next 5 days
 <pre><code>developers.facebook.com/docs/marketing-api/reference/ad-campaign-group/
 </code></pre>
 <p>Yes, the URL says "ad-campaign-group." This is one of Meta's quirks -- what everyone calls a "Campaign" is internally called an "Ad Campaign Group." The URL uses the internal name. Do not let this confuse you. They are the same thing.</p>
-<div class="screenshot-placeholder">Top of the Campaign reference page showing the endpoint URL and description</div>
-
 <p>Here is what you see on the page, section by section:</p>
 <h3 id="the-endpoint-url">The Endpoint URL</h3>
 <p>At the very top of the page, you will see something like:</p>
@@ -4448,8 +4622,6 @@ Recommendation: Refresh your token within the next 5 days
 </ol>
 <p>If it works, you will see a response with the created object's ID. If it fails, you will see an error message that tells you exactly what went wrong -- wrong field name, missing required parameter, invalid enum value, expired token.</p>
 <p>The Explorer is your safety net. If a call works in the Explorer, it will work in code. If it fails in the Explorer, no amount of scripting will fix it -- the problem is in the parameters, not the code.</p>
-<div class="screenshot-placeholder">Graph API Explorer with a POST request to create a campaign, showing the parameters panel filled in and a successful response</div>
-
 <p><strong>Step 5: Ask Claude Code to do it.</strong></p>
 <p>Now you have the context: the endpoint, the required parameters, the valid enum values, and proof that it works (from the Explorer test). You can now ask Claude Code directly:</p>
 <blockquote>
@@ -10584,6 +10756,107 @@ META_PIXEL_ID=your-pixel-id
         });
     }
 
+    // ─── Code Block Enhancement ───
+    function enhanceCodeBlocks() {
+        document.querySelectorAll('pre').forEach(pre => {
+            // Already wrapped?
+            if (pre.parentElement.classList.contains('code-block-wrapper')) return;
+
+            const wrapper = document.createElement('div');
+            wrapper.className = 'code-block-wrapper';
+            pre.parentNode.insertBefore(wrapper, pre);
+            wrapper.appendChild(pre);
+
+            // Detect language from class
+            const codeEl = pre.querySelector('code');
+            const langClass = codeEl ? (codeEl.className.match(/language-(\w+)/) || []) : [];
+            if (langClass[1]) {
+                const langBadge = document.createElement('span');
+                langBadge.className = 'code-lang';
+                langBadge.textContent = langClass[1];
+                wrapper.appendChild(langBadge);
+            }
+
+            // Copy button
+            const copyBtn = document.createElement('button');
+            copyBtn.className = 'code-copy-btn';
+            copyBtn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg> Copy';
+            copyBtn.addEventListener('click', () => {
+                const text = pre.textContent;
+                navigator.clipboard.writeText(text).then(() => {
+                    copyBtn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Copied!';
+                    copyBtn.classList.add('copied');
+                    setTimeout(() => {
+                        copyBtn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg> Copy';
+                        copyBtn.classList.remove('copied');
+                    }, 2000);
+                });
+            });
+            wrapper.appendChild(copyBtn);
+        });
+    }
+
+    // ─── Scroll Reveal ───
+    function setupScrollReveal() {
+        const elements = document.querySelectorAll(
+            '.chapter-header, .part-divider, .skill-download-card, .chapter-objectives, ' +
+            '.key-takeaway, .achievement-unlocked, .engagement-callout, .disclaimer-box, ' +
+            'figure.screenshot, .table-container, .code-block-wrapper'
+        );
+        elements.forEach(el => el.classList.add('reveal'));
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+        elements.forEach(el => observer.observe(el));
+    }
+
+    // ─── Image Lightbox ───
+    function setupLightbox() {
+        const overlay = document.createElement('div');
+        overlay.className = 'lightbox-overlay';
+        document.body.appendChild(overlay);
+
+        overlay.addEventListener('click', () => {
+            overlay.classList.remove('active');
+            setTimeout(() => { overlay.innerHTML = ''; }, 300);
+        });
+
+        document.querySelectorAll('figure.screenshot img').forEach(img => {
+            img.addEventListener('click', () => {
+                const clone = document.createElement('img');
+                clone.src = img.src;
+                clone.alt = img.alt;
+                overlay.innerHTML = '';
+                overlay.appendChild(clone);
+                // Force reflow then animate
+                overlay.offsetHeight;
+                overlay.classList.add('active');
+            });
+        });
+    }
+
+    // ─── Reading Time ───
+    function showReadingTime() {
+        const text = document.querySelector('.content-inner').textContent;
+        const words = text.split(/\s+/).length;
+        const minutes = Math.ceil(words / 250);
+        const el = document.querySelector('.reading-time');
+        if (!el) return;
+        if (minutes >= 60) {
+            const hrs = Math.round(minutes / 60 * 10) / 10;
+            el.textContent = '~' + hrs + ' hr read';
+        } else {
+            el.textContent = minutes + ' min read';
+        }
+    }
+
     // ─── Init ───
     document.addEventListener('DOMContentLoaded', () => {
         buildTOC();
@@ -10591,6 +10864,10 @@ META_PIXEL_ID=your-pixel-id
         setupSearch();
         setupMobileMenu();
         setupBackToTop();
+        enhanceCodeBlocks();
+        setupScrollReveal();
+        setupLightbox();
+        showReadingTime();
     });
 })();
 </script>
