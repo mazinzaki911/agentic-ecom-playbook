@@ -2322,15 +2322,43 @@ If you are a store owner managing your own shop -- or you are working directly i
 <div class="tip-box"><p><strong>Security note:</strong> The Client Secret is exactly what it sounds like -- secret. Never share it in a chat message, never paste it into a public document, and never commit it to version control (Git). We will set up protections for this in the next section.</p></div>
 <hr>
 <h2 id="33-configure-scopes-and-urls">3.3 Configure Scopes and URLs</h2>
-<p>Still in the Dev Dashboard, we need to tell Shopify two things: where your app "lives" and what it is allowed to do.</p>
-<h3 id="app-url">App URL</h3>
-<p>Since we are building automation scripts (not a web app with buttons and a user interface), there is no real URL to point to. Shopify requires one anyway, so use their built-in placeholder:</p>
-<pre><code>https://shopify.dev/apps/default-app-home
-</code></pre>
-<p>Paste this into the <strong>App URL</strong> field in the Configuration tab. This tells Shopify "this app does not have a web interface" -- and that is perfectly fine for our purposes.</p>
-<h3 id="api-scopes-permissions">API Scopes (Permissions)</h3>
+<p>Still in the Dev Dashboard, we need to tell Shopify three things: where your app "lives," where Shopify should redirect after authorization, and what the app is allowed to do.</p>
+<p>Since we are running Claude Code locally in a terminal, our app's "home" is your own machine. Shopify still requires a URL, so we point it to <strong>localhost</strong> -- the standard address for "this computer."</p>
+<h3 id="create-a-version">Step-by-step: Create a Version</h3>
+<p>Click <strong>"Versions"</strong> in the left sidebar, then <strong>"Create version"</strong>. You will see a form with several sections. Here is exactly how to fill each one:</p>
+<h4>App Name</h4>
+<p>Leave this as the name you chose in Section 3.2 (e.g., "Store Automation").</p>
+<h4>URLs</h4>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>App URL</strong></td>
+<td><code>http://localhost:3000</code></td>
+<td>Tells Shopify your app runs locally on your machine, on port 3000</td>
+</tr>
+<tr>
+<td><strong>Embed app in Shopify admin</strong></td>
+<td><strong>Uncheck this</strong></td>
+<td>Our app is a CLI tool, not an embedded web app. Leaving this checked will cause errors.</td>
+</tr>
+<tr>
+<td><strong>Preferences URL</strong></td>
+<td>Leave blank</td>
+<td>Only needed for apps with a settings page inside Shopify admin</td>
+</tr>
+</tbody>
+</table></div>
+<div class="tip-box"><p><strong>Why localhost:3000?</strong> When your automation scripts need to complete an OAuth handshake (where Shopify asks you to approve access), a tiny local web server spins up on port 3000 to catch Shopify's response. Think of it as a temporary mailbox -- it opens just long enough to receive the authorization code, then closes.</p></div>
+<h4>Scopes (Permissions)</h4>
 <p><strong>Scopes</strong> are permissions. Each scope grants your app the ability to read or write a specific type of data. Without the right scopes, your scripts will get "access denied" errors.</p>
-<p>Go to your app's <strong>Configuration</strong> tab and select the scopes you need. Here is a starter set that covers most ecommerce automation tasks:</p>
+<p>Click <strong>"Select scopes"</strong> and add the ones you need. Here is a starter set that covers most ecommerce automation tasks:</p>
 <div class="table-container"><table>
 <thead>
 <tr>
@@ -2393,15 +2421,21 @@ If you are a store owner managing your own shop -- or you are working directly i
 </tbody>
 </table></div>
 <p><strong>A practical tip:</strong> Only select the scopes you actually need right now. You can always add more later by releasing a new version of the app (explained next). Starting with fewer permissions is both safer and simpler.</p>
-<h3 id="release-a-version">Release a Version</h3>
+<h4>Redirect URL</h4>
+<p>Scroll down to the <strong>Redirect URLs</strong> field (you may need to check <strong>"Use legacy install flow"</strong> to reveal it). Enter:</p>
+<pre><code>http://localhost:3000/callback
+</code></pre>
+<p>This is the address Shopify will redirect your browser to after you approve the app's permissions. Your local server will be listening at this address to capture the authorization code.</p>
+<div class="warning-box"><p><strong>Important:</strong> The redirect URL must match <strong>exactly</strong> -- including the protocol (<code>http</code>, not <code>https</code>), the port (<code>:3000</code>), and the path (<code>/callback</code>). A single character difference and Shopify will reject the redirect with an "invalid redirect_uri" error.</p></div>
+<h3 id="release-the-version">Release the Version</h3>
 <p>This is the step people most often forget -- and then spend an hour wondering why nothing works.</p>
-<p>After configuring your scopes and URLs, you must <strong>release a version</strong> to make those settings active. Think of it like saving a document: until you click save, your changes exist only as a draft.</p>
+<p>After filling in all the fields above, you must <strong>release the version</strong> to make those settings active. Think of it like saving a document: until you click save, your changes exist only as a draft.</p>
 <ol>
-<li>Click the <strong>"Release"</strong> button (usually at the top-right of the Configuration page)</li>
-<li>Optionally give it a name like <strong>"v1 - Initial setup"</strong></li>
+<li>Click the <strong>"Release"</strong> button at the top-right of the page</li>
+<li>Optionally give it a name like <strong>"v1 - Local setup"</strong></li>
 <li>Click <strong>"Release"</strong> to confirm</li>
 </ol>
-<p>Your app configuration is now live. If you ever change scopes in the future, you will need to release a new version for those changes to take effect.</p>
+<p>Your app configuration is now live. If you ever change scopes or URLs in the future, you will need to release a new version for those changes to take effect.</p>
 <blockquote>
 <p><strong>Key point:</strong> Releasing a version does NOT install the app on any store. It just "publishes" the configuration. Installation is a separate step (coming up next).</p>
 </blockquote>
@@ -2467,6 +2501,7 @@ If you are a store owner managing your own shop -- or you are working directly i
 <pre><code>SHOPIFY_SHOP=your-store-name
 SHOPIFY_CLIENT_ID=your-client-id-from-dev-dashboard
 SHOPIFY_CLIENT_SECRET=your-client-secret-from-dev-dashboard
+SHOPIFY_REDIRECT_URI=http://localhost:3000/callback
 </code></pre>
 <p>Replace the placeholder values with your actual credentials:</p>
 <div class="table-container"><table>
@@ -2492,6 +2527,11 @@ SHOPIFY_CLIENT_SECRET=your-client-secret-from-dev-dashboard
 <td><code>SHOPIFY_CLIENT_SECRET</code></td>
 <td>The Client Secret from Section 3.2</td>
 <td><code>shp_cs_xyz789ghi012...</code></td>
+</tr>
+<tr>
+<td><code>SHOPIFY_REDIRECT_URI</code></td>
+<td>The callback URL from Section 3.3</td>
+<td><code>http://localhost:3000/callback</code></td>
 </tr>
 </tbody>
 </table></div>
@@ -10174,6 +10214,7 @@ SHOPIFY_SHOP=your-store-name
 # From Dev Dashboard &gt; Your App &gt; Settings
 SHOPIFY_CLIENT_ID=your-client-id
 SHOPIFY_CLIENT_SECRET=your-client-secret
+SHOPIFY_REDIRECT_URI=http://localhost:3000/callback
 
 # ============================================
 # META / FACEBOOK CONFIGURATION

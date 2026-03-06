@@ -19,8 +19,12 @@ Establish and verify a live connection between Claude Code and a Shopify store. 
 ## Prerequisites
 
 - **Playwright MCP server** must be installed and running. This is what makes this skill future-proof — it can navigate to Shopify's developer docs to verify current authentication requirements, scope names, and API versions.
-- A Shopify store with an existing Custom App or Private App that has an Admin API access token.
+- A Shopify store with a Dev Dashboard app (client credentials grant) installed on it.
 - The store URL (e.g., `{your_store}.myshopify.com`).
+- The Dev Dashboard app must be configured with:
+  - **App URL**: `http://localhost:3000`
+  - **Redirect URL**: `http://localhost:3000/callback`
+  - **Embed app in Shopify admin**: unchecked
 
 ## Self-Learning Protocol
 
@@ -41,7 +45,9 @@ Before executing any API call that fails or seems outdated, use Playwright to ve
 
 1. **Collect credentials.** Ask the user for:
    - Store URL: `https://{your_store}.myshopify.com`
-   - Admin API Access Token: `shpat_xxxxxxxxxxxxxx`
+   - Client ID from the Dev Dashboard
+   - Client Secret from the Dev Dashboard
+   - Redirect URI (default: `http://localhost:3000/callback`)
 
 2. **Test the connection** with a lightweight GraphQL query:
    ```graphql
@@ -78,9 +84,10 @@ Before executing any API call that fails or seems outdated, use Playwright to ve
 
 5. **Save credentials to `.env`:**
    ```env
-   SHOPIFY_STORE_URL=https://{your_store}.myshopify.com
-   SHOPIFY_ACCESS_TOKEN=shpat_xxxxxxxxxxxxxx
-   SHOPIFY_SHOP={your_store}.myshopify.com
+   SHOPIFY_SHOP={your_store}
+   SHOPIFY_CLIENT_ID=your-client-id
+   SHOPIFY_CLIENT_SECRET=your-client-secret
+   SHOPIFY_REDIRECT_URI=http://localhost:3000/callback
    ```
 
 6. **Update CLAUDE.md** with the store name, plan, and currency for future reference.
@@ -99,20 +106,21 @@ Before executing any API call that fails or seems outdated, use Playwright to ve
 
 After this skill runs, these will be set:
 
-- `SHOPIFY_STORE_URL` — full store URL
-- `SHOPIFY_ACCESS_TOKEN` — Admin API access token
-- `SHOPIFY_SHOP` — store domain
+- `SHOPIFY_SHOP` — store handle (without `.myshopify.com`)
+- `SHOPIFY_CLIENT_ID` — Client ID from Dev Dashboard
+- `SHOPIFY_CLIENT_SECRET` — Client Secret from Dev Dashboard
+- `SHOPIFY_REDIRECT_URI` — OAuth callback URL (`http://localhost:3000/callback`)
 
 ## Example Usage
 
 ```
-User: Connect to my Shopify store at mystore.myshopify.com with token shpat_abc123
+User: Connect to my Shopify store at mystore.myshopify.com
 ```
 
-The skill will test the connection, verify scopes, save credentials, and report the store details.
+The skill will prompt for Client ID and Secret, test the connection via client credentials grant, verify scopes, save credentials, and report the store details.
 
 ```
 User: /shopify-connect
 ```
 
-Interactive flow that prompts for the store URL and token.
+Interactive flow that prompts for the store URL and Dev Dashboard credentials.
