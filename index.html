@@ -143,10 +143,14 @@ body {
 }
 
 /* Search */
+.search-box-wrapper {
+    position: relative;
+    flex-shrink: 0;
+}
+
 .search-box {
     padding: 12px 16px;
     border-bottom: 1px solid rgba(255,255,255,0.06);
-    flex-shrink: 0;
 }
 
 .search-box input {
@@ -183,14 +187,20 @@ body {
     pointer-events: none;
 }
 
-/* Search results */
+/* Search results — overlay on top of TOC */
 .search-results {
     display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
     padding: 8px 16px;
     border-bottom: 1px solid rgba(255,255,255,0.06);
-    max-height: 300px;
+    max-height: 50vh;
     overflow-y: auto;
-    flex-shrink: 0;
+    background: linear-gradient(180deg, #1A1D26 0%, #141720 100%);
+    z-index: 10;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
 }
 
 .search-results.active { display: block; }
@@ -1503,10 +1513,12 @@ hr { border: none; height: 1px; background: var(--smoke); margin: 28px 0; }
             <h2>The Agentic Ecom Playbook</h2>
             <div class="subtitle">Claude Code for eCom</div>
         </div>
+        <div class="search-box-wrapper">
         <div class="search-box">
             <input type="text" id="search-input" placeholder="Search... (Ctrl+K)" autocomplete="off" />
         </div>
         <div id="search-results" class="search-results"></div>
+        </div>
         <nav class="toc" id="toc"></nav>
         <div class="sidebar-author">
             <a href="https://www.instagram.com/itsmazinzaki/" target="_blank" rel="noopener noreferrer">
@@ -10580,6 +10592,7 @@ META_PIXEL_ID=your-pixel-id
                     item.addEventListener('click', () => {
                         r.element.scrollIntoView({ behavior: 'smooth', block: 'center' });
                         resultsContainer.classList.remove('active');
+                        input.value = '';
                     });
                     resultsContainer.appendChild(item);
                 });
@@ -10600,6 +10613,13 @@ META_PIXEL_ID=your-pixel-id
                 (end < text.length ? '...' : '');
             return snippet;
         }
+
+        // Close search results when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.search-box-wrapper')) {
+                resultsContainer.classList.remove('active');
+            }
+        });
 
         function clearHighlights() {
             document.querySelectorAll('.search-highlight').forEach(el => {
